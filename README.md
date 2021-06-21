@@ -68,4 +68,56 @@ plt.xlabel('X', size=14)
 plt.ylabel('Y', size=14)
 plt.show()
 ```
+Click on the image to have a better view
+![bestfit](https://user-images.githubusercontent.com/84714883/122829187-36411000-d2d6-11eb-85f4-375aa096f62b.png)
 
+```python
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+model = SimpleLinearRegression() 
+model.fit(X_train, y_train)
+preds = model.predict(X_test)
+model.b0, model.b1
+```
+(-3.5170837783608135, 1.0219248804797427)
+
+
+
+```python
+preds
+y_test
+from sklearn.metrics import mean_squared_error
+rmse = lambda y, y_pred: np.sqrt(mean_squared_error(y, y_pred))
+rmse(y_test, preds)
+```
+14.941281910012036
+
+```python
+model_all = SimpleLinearRegression() 
+model_all.fit(X, y)
+preds_all = model_all.predict(X)
+
+plt.scatter(X, y, s=200, c='#087E8B', alpha=0.65, label='Source data')
+plt.plot(X, preds_all, color='#000000', lw=3, label=f'Best fit line > B0 = {model_all.b0:.2f}, B1 = {model_all.b1:.2f}')
+plt.title('Best fit line', size=20)
+plt.xlabel('X', size=14)
+plt.ylabel('Y', size=14)
+plt.legend()
+plt.show()
+```
+Click the image to have a better view of it
+![fitline](https://user-images.githubusercontent.com/84714883/122830252-9c7a6280-d2d7-11eb-96f0-1984d4c294f2.png)
+
+#### Comparison with Scikit-Learn
+``` python
+from sklearn.linear_model import LinearRegression
+sk_model = LinearRegression() 
+sk_model.fit(np.array(X_train).reshape(-1, 1), y_train) 
+sk_preds = sk_model.predict(np.array(X_test).reshape(-1, 1))
+sk_model.intercept_, sk_model.coef_
+```
+(-3.517083778360842, array([1.02192488]))
+```python
+rmse(y_test, sk_preds)
+```
+14.941281910012039
